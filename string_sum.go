@@ -55,7 +55,7 @@ func StringSum(input string) (output string, err error) {
 	}
 	var parsedSecondNumber, parsedSecondNumberErr = strconv.Atoi(stringNumbers[1])
 	if (parsedSecondNumberErr != nil) {
-		return "", fmt.Errorf(parsedSecondNumberErr.Error())
+		return "", parsedSecondNumberErr
 	}
 	if (isPlus) {
 		return fmt.Sprint(parsedFirstNumber + parsedSecondNumber), nil
