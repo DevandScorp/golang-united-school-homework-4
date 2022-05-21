@@ -27,7 +27,7 @@ var (
 
 func StringSum(input string) (output string, err error) {
 	if (input == "") {
-		return "", fmt.Errorf(errorEmptyInput.Error())
+		return "", fmt.Errorf("%w", errorEmptyInput)
 	}
 	input = strings.ReplaceAll(input, " ", "")
 	isPlus := false
@@ -42,7 +42,7 @@ func StringSum(input string) (output string, err error) {
 			stringNumbers[0] = "-" + string(splittedString[1])
 			stringNumbers[1] = string(splittedString[2])
 		} else {
-			return "", fmt.Errorf(errorNotTwoOperands.Error())
+			return "", fmt.Errorf("%w", errorNotTwoOperands)
 		}
 	} else {
 		isPlus = true
@@ -51,11 +51,11 @@ func StringSum(input string) (output string, err error) {
 	}
 	var parsedFirstNumber, parsedFirstNumberErr = strconv.Atoi(stringNumbers[0])
 	if (parsedFirstNumberErr != nil) {
-		return "", fmt.Errorf(parsedFirstNumberErr.Error())
+		return "", fmt.Errorf("%w", parsedFirstNumberErr)
 	}
 	var parsedSecondNumber, parsedSecondNumberErr = strconv.Atoi(stringNumbers[1])
 	if (parsedSecondNumberErr != nil) {
-		return "", parsedSecondNumberErr
+		return "", fmt.Errorf("%w", parsedSecondNumberErr)
 	}
 	if (isPlus) {
 		return fmt.Sprint(parsedFirstNumber + parsedSecondNumber), nil
