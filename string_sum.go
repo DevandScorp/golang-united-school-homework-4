@@ -2,6 +2,9 @@ package string_sum
 
 import (
 	"errors"
+	"fmt"
+	"strings"
+	"strconv"
 )
 
 //use these errors as appropriate, wrapping them with fmt.Errorf function
@@ -23,5 +26,40 @@ var (
 // Use the errors defined above as described, again wrapping into fmt.Errorf
 
 func StringSum(input string) (output string, err error) {
-	return "", nil
+	if (input == "") {
+		return "", fmt.Errorf(errorEmptyInput.Error())
+	}
+	input = strings.ReplaceAll(input, " ", "")
+	isPlus := false
+	stringNumbers := [2]string{}
+	splittedString := strings.Split(input, "+")
+	if (len(splittedString) != 2) {
+		splittedString := strings.Split(input, "-")
+		if (len(splittedString) == 2) {
+			stringNumbers[0] = string(splittedString[0])
+			stringNumbers[1] = string(splittedString[1])
+		} else if (len(splittedString) != 2 && splittedString[0] == "") {
+			stringNumbers[0] = "-" + string(splittedString[1])
+			stringNumbers[1] = string(splittedString[2])
+		} else {
+			return "", fmt.Errorf(errorNotTwoOperands.Error())
+		}
+	} else {
+		isPlus = true
+		stringNumbers[0] = string(splittedString[0])
+		stringNumbers[1] = string(splittedString[1])
+	}
+	var parsedFirstNumber, parsedFirstNumberErr = strconv.Atoi(stringNumbers[0])
+	if (parsedFirstNumberErr != nil) {
+		return "", fmt.Errorf(parsedFirstNumberErr.Error())
+	}
+	var parsedSecondNumber, parsedSecondNumberErr = strconv.Atoi(stringNumbers[1])
+	if (parsedSecondNumberErr != nil) {
+		return "", fmt.Errorf(parsedSecondNumberErr.Error())
+	}
+	if (isPlus) {
+		return fmt.Sprint(parsedFirstNumber + parsedSecondNumber), nil
+	} else {
+		return fmt.Sprint(parsedFirstNumber - parsedSecondNumber), nil
+	}
 }
